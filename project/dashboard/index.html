@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <style>
+      :root {
+        --bg: #f3f6f8;
+        --surface: #ffffff;
+        --ink: #14202b;
+        --muted: #75818d;
+        --line: #e1e8ee;
+        --soft: #eef3f7;
+        --dark: #111a22;
+        --accent: #e8b16a;
+        --green: #3caa72;
+        --shadow: 0 18px 52px rgba(31, 43, 55, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+      }
+
+      .dashboard {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+      }
+
+      aside {
+        padding: 28px;
+        border-right: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 42px;
+        font-size: 24px;
+        font-weight: 850;
+      }
+
+      .mark {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 15px;
+        color: #fff;
+        background: var(--dark);
+      }
+
+      nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      nav a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        color: var(--muted);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      nav a.active {
+        color: var(--ink);
+        background: var(--soft);
+      }
+
+      .main {
+        padding: 34px;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 32px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(32px, 4vw, 46px);
+        line-height: 1.05;
+      }
+
+      .header-copy {
+        margin: 9px 0 0;
+        color: var(--muted);
+      }
+
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 14px 9px 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--surface);
+        box-shadow: 0 12px 30px rgba(31, 43, 55, 0.08);
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logout-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 56px;
+        padding: 0 22px;
+        border: 1px solid rgba(20, 32, 43, 0.1);
+        border-radius: 999px;
+        color: var(--surface);
+        background: var(--dark);
+        box-shadow: 0 14px 34px rgba(17, 26, 34, 0.16);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 850;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .logout-button:hover {
+        transform: translateY(-2px);
+        background: #1b2a36;
+        box-shadow: 0 18px 42px rgba(17, 26, 34, 0.22);
+      }
+
+      .avatar {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: linear-gradient(135deg, var(--dark), #405166);
+        font-weight: 800;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 24px;
+      }
+
+      .card {
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .stat-label {
+        margin: 0 0 16px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .stat-value {
+        margin: 0;
+        font-size: 34px;
+        font-weight: 850;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 0.8fr;
+        gap: 24px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .pill {
+        padding: 8px 12px;
+        border-radius: 999px;
+        color: #7b541d;
+        background: rgba(232, 177, 106, 0.2);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .project {
+        display: grid;
+        grid-template-columns: 72px 1fr auto;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .project:first-of-type {
+        border-top: 0;
+      }
+
+      .thumb {
+        width: 72px;
+        height: 58px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #17232d, #8ca0aa);
+      }
+
+      .project h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+
+      .project p,
+      .timeline p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .status {
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 18px;
+      }
+
+      .event {
+        display: grid;
+        grid-template-columns: 13px 1fr;
+        gap: 12px;
+      }
+
+      .dot {
+        width: 13px;
+        height: 13px;
+        margin-top: 4px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 5px rgba(232, 177, 106, 0.18);
+      }
+
+      .event strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      @media (max-width: 980px) {
+        .dashboard {
+          grid-template-columns: 1fr;
+        }
+
+        aside {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        nav {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .stats,
+        .content-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .main,
+        aside {
+          padding: 22px;
+        }
+
+        header,
+        .project {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .header-actions {
+          width: 100%;
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .profile,
+        .logout-button {
+          width: 100%;
+        }
+
+        nav,
+        .stats,
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .project {
+          display: flex;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard">
+      <aside>
+        <div class="brand">
+          <div class="mark">A</div>
+          Amero
+        </div>
+
+        <nav aria-label="Dashboard navigation">
+          <a class="active" href="#">Overview</a>
+          <a href="#">Projects</a>
+          <a href="#">Catalog</a>
+          <a href="#">Settings</a>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header>
+          <div>
+            <h1>Dashboard</h1>
+            <p class="header-copy">Track projects, budget ranges, and design progress.</p>
+          </div>
+
+          <div class="header-actions">
+            <div class="profile">
+              <div class="avatar">RR</div>
+              <strong>Rishabh</strong>
+            </div>
+            <button class="logout-button" type="button">Logout</button>
+          </div>
+        </header>
+
+        <section class="stats" aria-label="Dashboard statistics">
+          <article class="card">
+            <p class="stat-label">Active Projects</p>
+            <p class="stat-value">04</p>
+          </article>
+          <article class="card">
+            <p class="stat-label">Saved Homes</p>
+            <p class="stat-value">18</p>
+          </article>
+          <article class="card">
+            <p class="stat-label">Budget Range</p>
+            <p class="stat-value">$420k</p>
+          </article>
+          <article class="card">
+            <p class="stat-label">Timeline</p>
+            <p class="stat-value">12w</p>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="card">
+            <div class="section-title">
+              <h2>Current Projects</h2>
+              <span class="pill">In progress</span>
+            </div>
+
+            <div class="project">
+              <div class="thumb"></div>
+              <div>
+                <h3>Mountain Ridge Cabin</h3>
+                <p>Design review and finish selection</p>
+              </div>
+              <span class="status">72%</span>
+            </div>
+
+            <div class="project">
+              <div class="thumb"></div>
+              <div>
+                <h3>Lakefront Module</h3>
+                <p>Permit package preparation</p>
+              </div>
+              <span class="status">48%</span>
+            </div>
+
+            <div class="project">
+              <div class="thumb"></div>
+              <div>
+                <h3>Forest Studio</h3>
+                <p>Initial planning and site fit</p>
+              </div>
+              <span class="status">31%</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="section-title">
+              <h2>Timeline</h2>
+            </div>
+
+            <div class="timeline">
+              <div class="event">
+                <div class="dot"></div>
+                <div>
+                  <strong>Site survey booked</strong>
+                  <p>Tomorrow at 10:30 AM</p>
+                </div>
+              </div>
+              <div class="event">
+                <div class="dot"></div>
+                <div>
+                  <strong>Catalog shortlist updated</strong>
+                  <p>3 new layouts added</p>
+                </div>
+              </div>
+              <div class="event">
+                <div class="dot"></div>
+                <div>
+                  <strong>Budget estimate ready</strong>
+                  <p>Review the latest revision</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
